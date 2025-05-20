@@ -52,24 +52,30 @@ export default class LoginForm {
       // in creating it this way, I'm not able to distinguuish if the error is either in the username or password, only that that there is an error
       //Currently I'm doing this directly in the tests
     } else {
+      await console.log("does this work");
       await this.verifySuccessfulLogin();
     }
   }
 
   public async verifySuccessfulLogin(): Promise<void> {
-    await this.page.waitForURL(
-      /.*practicetestautomation\.com\/logged-in-successfully\//,
-      {
-        timeout: 15000,
-        waitUntil: "domcontentloaded",
-      }
-    );
-    await expect(this.postHeader).toContainText("Logged In Successfully");
+    await this.page.waitForURL(/.*logged-in-successfully\//, {
+      timeout: 10000,
+    });
+    await expect(this.postHeader).toHaveText("Logged In Successfully");
+    await expect(this.postHeader).toHaveText("Logged In Successfully", {
+      timeout: 15000,
+    });
     await expect(this.postContent).toContainText(
       "Congratulations student. You successfully logged in!"
     );
-    await expect(this.logOutButton).toBeVisible();
-    await this.logOutButton.click();
-    await console.log("Alles is sehr shon mine libliengs freunde!");
+    await this.logOutButton.waitFor({ state: "visible", timeout: 5000 });
+    await expect(this.logOutButton).toBeEnabled();
+    await Promise.all([
+      this.page.waitForURL(
+        /.*practicetestautomation\.com\/practice-test-login\//
+      ),
+      this.logOutButton.click(),
+    ]);
+    //await console.log("Alles is sehr shon mine libliengs freunde!");
   }
 }

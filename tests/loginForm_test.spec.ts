@@ -11,7 +11,6 @@ test.describe("Positive Login Test Cases", () => {
     const loginPage = new LoginForm(page);
     await loginPage.goto(base_url);
     await loginPage.enterLoginCredentials(username, password);
-    await loginPage.verifySuccessfulLogin();
   });
 });
 
