@@ -50,6 +50,7 @@ export default class LoginForm {
       await expect(this.errorMessage).toBeVisible();
       // I still need to test if the issue is either in the username or password,
       // in creating it this way, I'm not able to distinguuish if the error is either in the username or password, only that that there is an error
+      //Currently I'm doing this directly in the tests
     } else {
       await this.verifySuccessfulLogin();
     }
